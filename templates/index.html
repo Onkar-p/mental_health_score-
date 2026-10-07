@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MindScore | Mental Health Score</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="background-orb orb-one"></div>
+<div class="background-orb orb-two"></div>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+    <div class="brand">
+        <div class="brand-icon">✦</div>
+
+        <div>
+            <h2>MindScore</h2>
+            <span>Well-being insights</span>
+        </div>
+    </div>
+
+    <div class="privacy">
+        🔒 Private & Secure
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                <span></span>
+                PERSONAL WELL-BEING CHECK
+            </div>
+
+            <h1>
+                Understand your
+                <span>daily balance.</span>
+            </h1>
+
+            <p>
+                Answer a few simple questions about your lifestyle,
+                studies, screen habits, sleep and stress.
+                Our machine learning model will estimate your
+                mental health score from 0 to 10.
+            </p>
+
+            <div class="features">
+
+                <div>
+                    <b>✓</b>
+                    Quick assessment
+                </div>
+
+                <div>
+                    <b>✓</b>
+                    Easy to understand
+                </div>
+
+                <div>
+                    <b>✓</b>
+                    ML powered
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-animation">
+
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+
+            <div class="heart">
+                ♥
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PROGRESS -->
+    <div class="progress-container">
+
+        <div class="progress-info">
+            <span>Assessment progress</span>
+            <strong id="progress-text">0% complete</strong>
+        </div>
+
+        <div class="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+
+    </div>
+
+
+    <div class="main-grid">
+
+
+        <!-- FORM -->
+        <form id="predict-form"
+              class="card form-card"
+              novalidate>
+
+
+            <!-- SECTION 1 -->
+            <div class="section-heading">
+
+                <div class="section-number">
+                    01
+                </div>
+
+                <div>
+                    <h2>About You</h2>
+                    <p>A few basic details about yourself.</p>
+                </div>
+
+            </div>
+
+
+            <fieldset>
+
+                <div class="grid grid-3">
+
+                    <!-- AGE -->
+                    <div class="field">
+
+                        <label for="age">
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            min="10"
+                            max="100"
+                            step="1"
+                            placeholder="21">
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- GENDER -->
+                    <div class="field">
+
+                        <label for="gender">
+                            Gender
+                        </label>
+
+                        <select id="gender"
+                                name="gender">
+
+                            <option value="" selected disabled>
+                                Select gender
+                            </option>
+
+                            {% for g in choices.gender %}
+                                <option>{{ g }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- COUNTRY -->
+                    <div class="field">
+
+                        <label for="country">
+                            Country
+                        </label>
+
+                        <input
+                            type="text"
+                            id="country"
+                            name="country"
+                            list="countries"
+                            placeholder="India"
+                            autocomplete="off">
+
+                        <datalist id="countries">
+
+                            {% for c in countries %}
+                                <option value="{{ c }}">
+                            {% endfor %}
+
+                        </datalist>
+
+                        <span class="error"></span>
+
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+
+            <!-- SECTION 2 -->
+            <div class="section-heading">
+
+                <div class="section-number">
+                    02
+                </div>
+
+                <div>
+                    <h2>Studies & Social Media</h2>
+                    <p>Tell us about your study and phone habits.</p>
+                </div>
+
+            </div>
+
+
+            <fieldset>
+
+                <div class="grid grid-2">
+
+
+                    <!-- ACADEMIC -->
+                    <div class="field">
+
+                        <label for="academic_level">
+                            Academic level
+                        </label>
+
+                        <select id="academic_level"
+                                name="academic_level">
+
+                            <option value="" selected disabled>
+                                Select level
+                            </option>
+
+                            {% for a in choices.academic_level %}
+                                <option>{{ a }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- PLATFORM -->
+                    <div class="field">
+
+                        <label for="most_used_platform">
+                            Most-used platform
+                        </label>
+
+                        <select id="most_used_platform"
+                                name="most_used_platform">
+
+                            <option value="" selected disabled>
+                                Select platform
+                            </option>
+
+                            {% for p in choices.most_used_platform %}
+                                <option>{{ p }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- PURPOSE -->
+                    <div class="field">
+
+                        <label for="purpose_of_use">
+                            Main reason you use it
+                        </label>
+
+                        <select id="purpose_of_use"
+                                name="purpose_of_use">
+
+                            <option value="" selected disabled>
+                                Select purpose
+                            </option>
+
+                            {% for p in choices.purpose_of_use %}
+                                <option>{{ p }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- UNLOCKS -->
+                    <div class="field">
+
+                        <label for="daily_unlocks">
+                            Phone unlocks per day
+                        </label>
+
+                        <input
+                            type="number"
+                            id="daily_unlocks"
+                            name="daily_unlocks"
+                            min="0"
+                            step="1"
+                            placeholder="60">
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- SOCIAL MEDIA -->
+                    <div class="field">
+
+                        <label for="avg_daily_usage_hours">
+                            Social media per day
+                        </label>
+
+                        <div class="unit">
+
+                            <input
+                                type="number"
+                                id="avg_daily_usage_hours"
+                                name="avg_daily_usage_hours"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                placeholder="4.5">
+
+                            <span>hours</span>
+
+                        </div>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- STUDY -->
+                    <div class="field">
+
+                        <label for="study_hours">
+                            Study per day
+                        </label>
+
+                        <div class="unit">
+
+                            <input
+                                type="number"
+                                id="study_hours"
+                                name="study_hours"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                placeholder="3">
+
+                            <span>hours</span>
+
+                        </div>
+
+                        <span class="error"></span>
+
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+
+            <!-- SECTION 3 -->
+            <div class="section-heading">
+
+                <div class="section-number">
+                    03
+                </div>
+
+                <div>
+                    <h2>Health & Stress</h2>
+                    <p>Tell us about your daily health routine.</p>
+                </div>
+
+            </div>
+
+
+            <fieldset>
+
+                <div class="grid grid-2">
+
+
+                    <!-- SLEEP -->
+                    <div class="field">
+
+                        <label for="sleep_hours_per_night">
+                            Sleep per night
+                        </label>
+
+                        <div class="unit">
+
+                            <input
+                                type="number"
+                                id="sleep_hours_per_night"
+                                name="sleep_hours_per_night"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                placeholder="7">
+
+                            <span>hours</span>
+
+                        </div>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- EXERCISE -->
+                    <div class="field">
+
+                        <label for="physical_activity_hours">
+                            Exercise per day
+                        </label>
+
+                        <div class="unit">
+
+                            <input
+                                type="number"
+                                id="physical_activity_hours"
+                                name="physical_activity_hours"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                placeholder="1">
+
+                            <span>hours</span>
+
+                        </div>
+
+                        <span class="error"></span>
+
+                    </div>
+
+
+                    <!-- STRESS -->
+                    <div class="field full">
+
+                        <span class="label">
+                            How would you rate your stress?
+                        </span>
+
+                        <div class="stress-options">
+
+                            {% for s in choices.stress_level %}
+
+                            <label class="stress-option">
+
+                                <input
+                                    type="radio"
+                                    name="stress_level"
+                                    value="{{ s }}">
+
+                                <span>{{ s }}</span>
+
+                            </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <span class="error"></span>
+
+                    </div>
+
+                </div>
+
+            </fieldset>
+
+
+            <!-- SUBMIT -->
+            <div class="actions">
+
+                <button
+                    type="submit"
+                    id="submit-btn"
+                    class="submit-btn">
+
+                    <span class="spinner"></span>
+
+                    <span class="btn-text">
+                        Calculate My Score
+                    </span>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <!-- RESULT CARD -->
+        <aside class="card result-card"
+               aria-live="polite">
+
+
+            <!-- IDLE -->
+            <div id="state-idle"
+                 class="state">
+
+                <div class="result-icon">
+                    ♡
+                </div>
+
+                <span class="result-label">
+                    YOUR RESULT
+                </span>
+
+                <h2>
+                    Your score will appear here
+                </h2>
+
+                <p>
+                    Complete the assessment to see
+                    your personalized ML estimate.
+                </p>
+
+                <div class="tips">
+                    <span>01</span>
+                    Answer honestly
+                    <span>•</span>
+                    <span>02</span>
+                    Take your time
+                </div>
+
+            </div>
+
+
+            <!-- LOADING -->
+            <div id="state-loading"
+                 class="state"
+                 hidden>
+
+                <div class="loading-circle">
+
+                    <div class="loading-spinner"></div>
+
+                </div>
+
+                <span class="result-label">
+                    ANALYZING
+                </span>
+
+                <h2>
+                    Calculating your score...
+                </h2>
+
+                <p>
+                    Your answers are being processed
+                    by the machine learning model.
+                </p>
+
+            </div>
+
+
+            <!-- RESULT -->
+            <div id="state-result"
+                 class="state"
+                 hidden>
+
+                <span class="result-label">
+                    YOUR ESTIMATED SCORE
+                </span>
+
+                <div class="score">
+
+                    <span id="score-number">
+                        0.0
+                    </span>
+
+                    <small>
+                        / 10
+                    </small>
+
+                </div>
+
+
+                <!-- CIRCLE -->
+                <div class="score-circle">
+
+                    <svg viewBox="0 0 120 120">
+
+                        <circle
+                            class="circle-background"
+                            cx="60"
+                            cy="60"
+                            r="50">
+                        </circle>
+
+                        <circle
+                            id="score-progress"
+                            class="circle-progress"
+                            cx="60"
+                            cy="60"
+                            r="50">
+                        </circle>
+
+                    </svg>
+
+                    <strong id="circle-value">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <!-- BAR -->
+                <div class="meter">
+
+                    <div class="meter-track">
+
+                        <div
+                            id="meter-fill"
+                            class="meter-fill">
+                        </div>
+
+                    </div>
+
+                    <div class="meter-scale">
+
+                        <span>0</span>
+                        <span>5</span>
+                        <span>10</span>
+
+                    </div>
+
+                </div>
+
+
+                <div id="score-band"
+                     class="score-band">
+                </div>
+
+                <p id="score-context">
+                </p>
+
+
+                <button
+                    type="button"
+                    class="reset-btn"
+                    id="reset-btn">
+
+                    ↻ Start Over
+
+                </button>
+
+            </div>
+
+
+            <!-- ERROR -->
+            <div id="state-error"
+                 class="state"
+                 hidden>
+
+                <div class="error-icon">
+                    !
+                </div>
+
+                <span class="result-label">
+                    PLEASE CHECK
+                </span>
+
+                <h2 id="error-title">
+                    Something went wrong
+                </h2>
+
+                <p id="error-copy">
+                </p>
+
+                <button
+                    type="button"
+                    class="reset-btn"
+                    id="error-btn">
+
+                    Back to Form
+
+                </button>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <strong>MindScore</strong>
+
+    · This is an ML-based estimate, not a medical diagnosis.
+    If you are struggling, consider speaking with someone you trust
+    or a qualified mental health professional.
+
+</footer>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
+```
