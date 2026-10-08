@@ -1790,3 +1790,64 @@ footer strong {
 
 }
 
+/* =========================
+   PRECAUTIONS
+========================= */
+
+.precaution-box {
+    width: 100%;
+    margin-top: 18px;
+    padding: 15px 17px;
+
+    background: rgba(255, 255, 255, 0.75);
+
+    border: 1px solid #dce9e6;
+    border-radius: 14px;
+
+    animation: precautionAppear 0.5s ease;
+}
+
+.precaution-box strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--green-dark);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    letter-spacing: 0.03em;
+}
+
+.precaution-box ul {
+    margin: 0;
+    padding-left: 18px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.precaution-box li {
+    margin-bottom: 3px;
+}
+
+.precaution-box li:last-child {
+    margin-bottom: 0;
+}
+
+@keyframes precautionAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}

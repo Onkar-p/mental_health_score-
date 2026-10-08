@@ -1,4 +1,3 @@
-
 (() => {
 
     "use strict";
@@ -496,6 +495,146 @@
 
 
     /* =========================
+       SCORE PRECAUTIONS
+    ========================= */
+
+    function getPrecautions(score) {
+
+        /* =====================
+           LOW SCORE
+           0 - 3.9
+        ===================== */
+
+        if (score < 4) {
+
+            return [
+
+                "Try to maintain a regular sleep schedule.",
+
+                "Reduce excessive social media and screen time.",
+
+                "Include physical activity in your daily routine.",
+
+                "Take regular breaks during study or work.",
+
+                "Spend time with friends, family, or someone you trust.",
+
+                "If you feel persistently overwhelmed, consider talking to a qualified mental health professional."
+
+            ];
+
+        }
+
+
+        /* =====================
+           MODERATE SCORE
+           4 - 6.9
+        ===================== */
+
+        if (score < 7) {
+
+            return [
+
+                "Maintain a consistent sleep routine.",
+
+                "Balance study, screen time, exercise and relaxation.",
+
+                "Take short breaks during long study or screen sessions.",
+
+                "Try to include regular physical activity in your day.",
+
+                "Monitor your stress levels and practice relaxation activities.",
+
+                "Talk to someone you trust if stress starts affecting your daily life."
+
+            ];
+
+        }
+
+
+        /* =====================
+           HEALTHY SCORE
+           7 - 10
+        ===================== */
+
+        return [
+
+            "Continue maintaining your healthy daily routine.",
+
+            "Keep a consistent and sufficient sleep schedule.",
+
+            "Continue regular physical activity.",
+
+            "Keep social media and screen time balanced.",
+
+            "Continue taking breaks and making time for relaxation.",
+
+            "Keep monitoring your overall well-being."
+
+        ];
+
+    }
+
+
+    /* =========================
+       SHOW PRECAUTIONS
+    ========================= */
+
+    function showPrecautions(score) {
+
+        const precautionList =
+            $("precaution-list");
+
+
+        /* If precaution list does
+           not exist, do nothing */
+
+        if (!precautionList) {
+
+            return;
+
+        }
+
+
+        /* Clear old precautions */
+
+        precautionList.innerHTML =
+            "";
+
+
+        /* Get precautions
+           according to score */
+
+        const precautions =
+            getPrecautions(score);
+
+
+        /* Add each precaution */
+
+        precautions.forEach(
+            precaution => {
+
+                const li =
+                    document.createElement(
+                        "li"
+                    );
+
+
+                li.textContent =
+                    precaution;
+
+
+                precautionList.appendChild(
+                    li
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
        SHOW RESULT
     ========================= */
 
@@ -523,10 +662,14 @@
             getBand(clamped);
 
 
+        /* Score */
+
         $("score-number")
             .textContent =
             score.toFixed(1);
 
+
+        /* Score band */
 
         const band =
             $("score-band");
@@ -541,10 +684,25 @@
             cssClass;
 
 
+        /* Score message */
+
         $("score-context")
             .textContent =
             message;
 
+
+        /* =====================
+           SHOW PRECAUTIONS
+        ===================== */
+
+        showPrecautions(
+            clamped
+        );
+
+
+        /* =====================
+           SCORE PERCENTAGE
+        ===================== */
 
         const percentage =
             clamped * 10;
@@ -571,8 +729,14 @@
             "0%";
 
 
-        showState("result");
+        showState(
+            "result"
+        );
 
+
+        /* =====================
+           ANIMATE SCORE
+        ===================== */
 
         requestAnimationFrame(
             () => {
@@ -811,7 +975,9 @@
             }
 
 
-            /* Loading */
+            /* =====================
+               LOADING
+            ===================== */
 
             submitBtn.disabled =
                 true;
@@ -861,7 +1027,9 @@
                         );
 
 
-                /* Validation error */
+                /* =====================
+                   VALIDATION ERROR
+                ===================== */
 
                 if (
                     response.status ===
@@ -893,7 +1061,9 @@
                 }
 
 
-                /* Server error */
+                /* =====================
+                   SERVER ERROR
+                ===================== */
 
                 if (
                     !response.ok
@@ -911,7 +1081,9 @@
                 }
 
 
-                /* Score missing */
+                /* =====================
+                   SCORE MISSING
+                ===================== */
 
                 if (
                     typeof
@@ -931,7 +1103,9 @@
                 }
 
 
-                /* SUCCESS */
+                /* =====================
+                   SUCCESS
+                ===================== */
 
                 showResult(
                     body.predicted_mental_health_score
@@ -984,6 +1158,20 @@
 
                 updateProgress();
 
+                /* Clear precautions */
+
+                const precautionList =
+                    $("precaution-list");
+
+
+                if (precautionList) {
+
+                    precautionList.innerHTML =
+                        "";
+
+                }
+
+
                 showState(
                     "idle"
                 );
@@ -1033,4 +1221,3 @@
     updateProgress();
 
 })();
-
